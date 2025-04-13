@@ -6,7 +6,7 @@ langchain-community
 langchain-openai 
 langchain-core
 langchain-huggingface
-chromadb
+faiss-cpu
 sentence-transformers
 pypdf
 python-dotenv
