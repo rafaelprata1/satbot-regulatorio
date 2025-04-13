@@ -33,8 +33,7 @@ retriever = vector_db.as_retriever()
 #persist_directory = "db"  # Choose a suitable directory name
 # vector_db = Chroma.from_documents(textos, embedding_engine) comentado devido a erros
 # cria bd vetorial vector database chamado ChromaDB.
-#vector_db = Chroma.from_documents(textos, embedding_engine, persist_directory=persist_directory
-)
+#vector_db = Chroma.from_documents(textos, embedding_engine, persist_directory=persist_directory)
 
 # Definir variaveis para chaves HF_TOKEN, OPENAI_API_KEY e LANGSMITH_API_KEY;
 
