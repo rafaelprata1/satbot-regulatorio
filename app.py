@@ -85,5 +85,20 @@ rag = (
 )
 
 # Para fazer qualquer consulta com os passos encadeados, basta utilizar a função invoke.
-prompt = "Quais são as DEFINIÇÕES estabelecidas no Ato 9523 de 27 de outubro de 2021?"
-rag.invoke(prompt)
+#prompt = "Quais são as DEFINIÇÕES estabelecidas no Ato 9523 de 27 de outubro de 2021?"
+#rag.invoke(prompt)
+
+# Interface Streamlit para o Chatbot
+st.title("🛰️ Chatbot RAG - Ato 9523 📘")
+st.markdown("Faça perguntas sobre o conteúdo do PDF do Ato SOR 9523/2021 da Anatel.")
+
+pergunta = st.text_input("Digite sua pergunta:")
+
+if st.button("Perguntar") and pergunta:
+    with st.spinner("Consultando..."):
+        resposta = rag.invoke(pergunta)
+        st.markdown("### Resposta:")
+        st.write(resposta)
+
+
+
