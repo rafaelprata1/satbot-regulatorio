@@ -89,7 +89,7 @@ rag = (
 #rag.invoke(prompt)
 
 # Interface Streamlit para o Chatbot
-st.title("🛰️ Chatbot RAG - Ato 9523 📘")
+st.title("🛰️⚖️📘 Chatbot RAG sobre Requisitos Técnicos de Satélites - Ato SOR Anatel 9523/2021 ")
 st.markdown("Faça perguntas sobre o conteúdo do PDF do Ato SOR 9523/2021 da Anatel.")
 
 pergunta = st.text_input("Digite sua pergunta:")
