@@ -1,4 +1,3 @@
-
 #instalação de bibliotecas
 !pip install langchain-community 
 !pip install langchain_huggingface
@@ -8,29 +7,22 @@
 
 #PASSO 1 - CARREGAMENTO DE PDF
 #montando o drive do Google Drive de onde lerá o dataset.
-
-from google.colab import drive
-drive.mount('/content/drive')
-pasta = 'drive/MyDrive/Colab Notebooks/MBA/Datasets/Espectro'
-arquivo = 'Ato_Requisitos_Tecnicos_Satelites.pdf'
-
-from langchain_community.document_loaders import PyPDFLoader
+arquivo = "Ato_Requisitos_Tecnicos_Satelites.pdf"
 
 #PASSO 2 - PARTICIONAMENTO DE DOCUMENTOS
-
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 
-#extrai texto do arquivo PDF
-dados = PyPDFLoader(f"{pasta}/{arquivo}").load()
+#extrai texto do PDF e carrega o conteúdo p/ uso posterior em pipeline IA com RAG
+from langchain_community.document_loaders import PyPDFLoader
+dados = PyPDFLoader(arquivo).load()
 
 #divide texto em "chunks" menores e armazena na variável "textos"
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=300) #400 e 100 originalmente
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=300) #400 e 100 originalmente
 textos = text_splitter.split_documents(dados)
 
 # PASSO 3 - EMBEDDINGS
-
 #Embedding usando um modelo disponível no Hugging Face de Text Vector Embedding.
 #Python framework for state-of-the-art sentence, text and image embeddings.
 #SentenceTransformer é a biblioteca e precisamos escolher um modelo para realizar o processo de geração dos feature vectors.
