@@ -29,9 +29,7 @@ textos = text_splitter.split_documents(dados)
 #abaixo é criada a engine associada para calcular os feature vectors.
 embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
 
-
 # PASSO 4 - VECTOR DATABASE
-
 # Specify a persistence directory (passo criado pois estava dando um erro no db vetorial, dica GEMINI)
 persist_directory = "db"  # Choose a suitable directory name
 
