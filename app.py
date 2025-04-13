@@ -4,7 +4,6 @@ arquivo = "Ato_Requisitos_Tecnicos_Satelites.pdf"
 
 #PASSO 2 - PARTICIONAMENTO DE DOCUMENTOS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 
 #extrai texto do PDF e carrega o conteúdo p/ uso posterior em pipeline IA com RAG
@@ -20,16 +19,21 @@ textos = text_splitter.split_documents(dados)
 #Python framework for state-of-the-art sentence, text and image embeddings.
 #SentenceTransformer é a biblioteca e precisamos escolher um modelo para realizar o processo de geração dos feature vectors.
 #abaixo é criada a engine associada para calcular os feature vectors.
+from langchain_huggingface import HuggingFaceEmbeddings
 embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
 
-# PASSO 4 - VECTOR DATABASE
+# PASSO 4 - VECTOR DATABASE com FAISS (para uso no Streamlit)
+from langchain_community.vectorstores import FAISS
+vector_db = FAISS.from_documents(textos, embedding_engine)
+
+# Para buscar documentos similares
+retriever = vector_db.as_retriever()
+
 # Specify a persistence directory (passo criado pois estava dando um erro no db vetorial, dica GEMINI)
-persist_directory = "db"  # Choose a suitable directory name
-
+#persist_directory = "db"  # Choose a suitable directory name
 # vector_db = Chroma.from_documents(textos, embedding_engine) comentado devido a erros
-
 # cria bd vetorial vector database chamado ChromaDB.
-vector_db = Chroma.from_documents(textos, embedding_engine, persist_directory=persist_directory
+#vector_db = Chroma.from_documents(textos, embedding_engine, persist_directory=persist_directory
 )
 
 # Definir variaveis para chaves HF_TOKEN, OPENAI_API_KEY e LANGSMITH_API_KEY;
@@ -41,11 +45,8 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-
 #OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 #LANGSMITH_API_KEY = userdata.get('LANGSMITH_API_KEY')
-
-
 #os.environ["LANGCHAIN_TRACING_V2"] = "true"
 
 n_documentos = 15
