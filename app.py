@@ -1,3 +1,13 @@
+"""
+Código para criação de chatbot usando banco de dados vetorial e LLM para interação com documento PDF
+"""
+#carregamento de chaves de API e TOKEN do SECRETS do Streamlit
+
+import streamlit as st
+LANGSMITH_API_KEY = st.secrets["LANGSMITH_API_KEY"]
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+HF_TOKEN = st.secrets["HF_TOKEN"]
+
 #PASSO 1 - CARREGAMENTO DE PDF
 #montando o drive do Google Drive de onde lerá o dataset.
 arquivo = "Ato_Requisitos_Tecnicos_Satelites.pdf"
