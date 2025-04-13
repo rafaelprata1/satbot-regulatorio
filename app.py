@@ -75,7 +75,6 @@ rag = (
     | StrOutputParser()
 )
 
-
 # Para fazer qualquer consulta com os passos encadeados, basta utilizar a função invoke.
 prompt = "Quais são as DEFINIÇÕES estabelecidas no Ato 9523 de 27 de outubro de 2021?"
 rag.invoke(prompt)
