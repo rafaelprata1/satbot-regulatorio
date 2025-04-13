@@ -58,7 +58,8 @@ def format_docs(documentos):
 #precisamos de um prompt "especial" que contextualiza o pedido por informação com os documentos.
 
 from langchain import hub
-prompt = hub.pull("rlm/rag-prompt", LANGCHAIN_API_KEY)
+#prompt = hub.pull("rlm/rag-prompt", LANGCHAIN_API_KEY)
+prompt = hub.pull("rlm/rag-prompt")
 
 from langchain_openai import ChatOpenAI
 llm = ChatOpenAI(openai_api_key = OPENAI_API_KEY, model = "gpt-4o-mini", temperature = 0)
