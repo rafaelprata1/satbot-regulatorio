@@ -1,0 +1,97 @@
+
+#instalação de bibliotecas
+!pip install langchain-community 
+!pip install langchain_huggingface
+!pip install pypdf
+!pip install chromadb
+!pip install langchain_openai # install langchain_openai package
+
+#PASSO 1 - CARREGAMENTO DE PDF
+#montando o drive do Google Drive de onde lerá o dataset.
+
+from google.colab import drive
+drive.mount('/content/drive')
+pasta = 'drive/MyDrive/Colab Notebooks/MBA/Datasets/Espectro'
+arquivo = 'Ato_Requisitos_Tecnicos_Satelites.pdf'
+
+from langchain_community.document_loaders import PyPDFLoader
+
+#PASSO 2 - PARTICIONAMENTO DE DOCUMENTOS
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
+
+#extrai texto do arquivo PDF
+dados = PyPDFLoader(f"{pasta}/{arquivo}").load()
+
+#divide texto em "chunks" menores e armazena na variável "textos"
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=300) #400 e 100 originalmente
+textos = text_splitter.split_documents(dados)
+
+# PASSO 3 - EMBEDDINGS
+
+#Embedding usando um modelo disponível no Hugging Face de Text Vector Embedding.
+#Python framework for state-of-the-art sentence, text and image embeddings.
+#SentenceTransformer é a biblioteca e precisamos escolher um modelo para realizar o processo de geração dos feature vectors.
+#abaixo é criada a engine associada para calcular os feature vectors.
+embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+
+
+# PASSO 4 - VECTOR DATABASE
+
+# Specify a persistence directory (passo criado pois estava dando um erro no db vetorial, dica GEMINI)
+persist_directory = "db"  # Choose a suitable directory name
+
+# vector_db = Chroma.from_documents(textos, embedding_engine) comentado devido a erros
+
+# cria bd vetorial vector database chamado ChromaDB.
+vector_db = Chroma.from_documents(textos, embedding_engine, persist_directory=persist_directory
+)
+
+# Definir variaveis para chaves HF_TOKEN, OPENAI_API_KEY e LANGSMITH_API_KEY;
+
+from langchain_openai import ChatOpenAI
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+
+#OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+#LANGSMITH_API_KEY = userdata.get('LANGSMITH_API_KEY')
+
+
+#os.environ["LANGCHAIN_TRACING_V2"] = "true"
+
+n_documentos = 15
+
+def format_docs(documentos):
+    return "\n\n".join(documento.page_content for documento in documentos)
+
+#PASSO 8 
+#usar os docs obtidos no vector database como contexto para nosso pedido de informação ao LLM.
+#precisamos de um prompt "especial" que contextualiza o pedido por informação com os documentos.
+
+from langchain import hub
+prompt = hub.pull("rlm/rag-prompt", LANGCHAIN_API_KEY)
+
+from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(openai_api_key = OPENAI_API_KEY, model = "gpt-4o-mini", temperature = 0)
+
+rag = (
+    {
+        "question": RunnablePassthrough(),
+        "context": vector_db.as_retriever(k = n_documentos)
+                    | format_docs
+    }
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+
+
+# Para fazer qualquer consulta com os passos encadeados, basta utilizar a função invoke.
+prompt = "Quais são as DEFINIÇÕES estabelecidas no Ato 9523 de 27 de outubro de 2021?"
+rag.invoke(prompt)
