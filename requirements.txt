@@ -4,6 +4,8 @@ streamlit
 langchain
 langchain-community
 langchain-openai
+langchain_openai 
+langchain_openai package
 langchain-core
 langchain-huggingface
 chromadb
