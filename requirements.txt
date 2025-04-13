@@ -1,0 +1,12 @@
+#Arquivo obrigatório para o Streamlit saber quais bibliotecas instalar
+
+streamlit
+langchain
+langchain-community
+langchain-openai
+langchain-core
+langchain-huggingface
+chromadb
+sentence-transformers
+pypdf
+python-dotenv
