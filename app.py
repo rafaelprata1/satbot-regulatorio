@@ -1,9 +1,9 @@
 #instalação de bibliotecas
-!pip install langchain-community 
-!pip install langchain_huggingface
-!pip install pypdf
-!pip install chromadb
-!pip install langchain_openai # install langchain_openai package
+#!pip install langchain-community 
+#!pip install langchain_huggingface
+#!pip install pypdf
+#!pip install chromadb
+#!pip install langchain_openai # install langchain_openai package
 
 #PASSO 1 - CARREGAMENTO DE PDF
 #montando o drive do Google Drive de onde lerá o dataset.
