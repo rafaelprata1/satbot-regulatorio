@@ -84,9 +84,10 @@ rag = (
     | StrOutputParser()
 )
 
-# Para fazer qualquer consulta com os passos encadeados, basta utilizar a função invoke.
 #prompt = "Quais são as DEFINIÇÕES estabelecidas no Ato 9523 de 27 de outubro de 2021?"
 #rag.invoke(prompt)
+
+# PASSO 9 - INTERFACE STREAMLIT Para fazer qualquer consulta com os passos encadeados, basta utilizar a função invoke.
 
 # Interface Streamlit para o Chatbot
 st.title("🛰️⚖️📘 Chatbot RAG sobre Requisitos Técnicos de Satélites - Ato SOR Anatel 9523/2021 ")
@@ -100,5 +101,6 @@ if st.button("Perguntar") and pergunta:
         st.markdown("### Resposta:")
         st.write(resposta)
 
-
+#desabilitando modo debug para melhorar performance
+streamlit run app.py --server.runOnSave false
 
