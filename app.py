@@ -102,5 +102,5 @@ if st.button("Perguntar") and pergunta:
         st.write(resposta)
 
 #desabilitando modo debug para melhorar performance
-streamlit run app.py --server.runOnSave false
+#streamlit run app.py --server.runOnSave false
 
