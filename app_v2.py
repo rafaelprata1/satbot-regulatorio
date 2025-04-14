@@ -104,7 +104,7 @@ if st.button("Perguntar"):
             resposta = rag.invoke(pergunta)
             st.session_state.historico.append(("Você", pergunta))
             st.session_state.historico.append(("🤖 Bot", resposta))
-        st.session_state.input_pergunta = ""  # limpa o campo de entrada
+        #st.session_state.input_pergunta = ""  # limpa o campo de entrada
 
 st.markdown("### Histórico da Conversa:")
 for autor, msg in st.session_state.historico:
