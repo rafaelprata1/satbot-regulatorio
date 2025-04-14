@@ -96,6 +96,11 @@ st.markdown("Faça perguntas e interaja com o Ato SOR 9523/2021 da Anatel para s
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
+
+st.markdown("### Histórico da Conversa:")
+for autor, msg in st.session_state.historico:
+    st.markdown(f"**{autor}:** {msg}")
+    
 pergunta = st.text_input("Digite sua pergunta:", key="input_pergunta")
 
 if st.button("Perguntar"):
@@ -106,18 +111,6 @@ if st.button("Perguntar"):
             st.session_state.historico.append(("🤖 Bot", resposta))
         #st.session_state.input_pergunta = ""  # limpa o campo de entrada
 
-st.markdown("### Histórico da Conversa:")
-for autor, msg in st.session_state.historico:
-    st.markdown(f"**{autor}:** {msg}")
-
-
-#pergunta = st.text_input("Digite sua pergunta:")
-
-#if st.button("Perguntar") and pergunta:
-#    with st.spinner("Consultando..."):
-#        resposta = rag.invoke(pergunta)
-#        st.markdown("### Resposta:")
-#        st.write(resposta)
 
 #desabilitando modo debug para melhorar performance
 #streamlit run app.py --server.runOnSave false
