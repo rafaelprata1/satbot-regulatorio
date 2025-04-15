@@ -15,7 +15,7 @@ pypdf
 python-dotenv
 hf_xet
 huggingface_hub[hf_xet]
-
+numpy==1.26.4
 
 # Abaixo linhas comentadas para recuperar tempo de processamento.
 #streamlit==1.32.2
