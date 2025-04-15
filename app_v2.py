@@ -31,8 +31,8 @@ textos = text_splitter.split_documents(dados)
 #abaixo é criada a engine associada para calcular os feature vectors.
 
 from langchain_huggingface import HuggingFaceEmbeddings
-#embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2") #omitido devido a erros no Streamlit
-embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+#embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 # PASSO 4 - VECTOR DATABASE com FAISS (para uso no Streamlit)
 from langchain_community.vectorstores import FAISS
