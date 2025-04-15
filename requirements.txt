@@ -1,10 +1,11 @@
 #Arquivo obrigatório para o Streamlit saber quais bibliotecas instalar
 
 streamlit
-langchain
-langchain-community
+langchain==0.1.16
+#langchain-community
+langchain-community==0.0.30
 langchain-openai 
-langchain-core
+#langchain-core
 langchain-huggingface
 faiss-cpu
 #sentence-transformers
@@ -12,5 +13,6 @@ torch==2.2.2
 sentence-transformers==2.2.2
 pypdf
 python-dotenv
-hf_xet
-huggingface_hub[hf_xet]
+#hf_xet
+#huggingface_hub[hf_xet]
+huggingface_hub
