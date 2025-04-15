@@ -29,8 +29,10 @@ textos = text_splitter.split_documents(dados)
 #Python framework for state-of-the-art sentence, text and image embeddings.
 #SentenceTransformer é a biblioteca e precisamos escolher um modelo para realizar o processo de geração dos feature vectors.
 #abaixo é criada a engine associada para calcular os feature vectors.
+
 from langchain_huggingface import HuggingFaceEmbeddings
-embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+#embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2") #omitido devido a erros no Streamlit
+embedding_engine = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 # PASSO 4 - VECTOR DATABASE com FAISS (para uso no Streamlit)
 from langchain_community.vectorstores import FAISS
@@ -96,7 +98,6 @@ st.markdown("Faça perguntas e interaja com o Ato SOR 9523/2021 da Anatel para s
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
-
 st.markdown("### Histórico da Conversa:")
 for autor, msg in st.session_state.historico:
     st.markdown(f"**{autor}:** {msg}")
@@ -108,7 +109,7 @@ if st.button("Perguntar"):
         with st.spinner("Consultando..."):
             resposta = rag.invoke(pergunta)
             st.session_state.historico.append(("Você", pergunta))
-            st.session_state.historico.append(("🤖 Bot", resposta))
+            st.session_state.historico.append(("🤖 Sat-Bot", resposta))
         #st.session_state.input_pergunta = ""  # limpa o campo de entrada
 
 
