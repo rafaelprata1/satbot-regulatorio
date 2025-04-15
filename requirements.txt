@@ -1,17 +1,26 @@
 # Arquivo obrigatório para o Streamlit saber quais bibliotecas instalar
 # packages arranged to optimize Streamlit Cloud build caching
-streamlit
-langchain
-langchain-community
+
+streamlit==1.32.2
+
+# LangChain e ecossistema
+langchain==0.1.16
+langchain-core>=0.1.42,<0.2.0
+langchain-community==0.0.34
 langchain-openai 
-#langchain-core
 langchain-huggingface
-faiss-cpu
+
+# Vetorização (RAG)
+faiss-cpu>=1.7.4,<2.0.0
+
 #sentence-transformers
 torch==2.2.2
 sentence-transformers==2.2.2
+
+# Carregamento PDF
 pypdf
 python-dotenv
+
 #hf_xet
 #huggingface_hub[hf_xet]
 huggingface_hub
