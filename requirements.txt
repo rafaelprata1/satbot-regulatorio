@@ -11,6 +11,7 @@ langchain-core
 langchain-huggingface
 faiss-cpu
 sentence-transformers
+torch==2.2.2
 pypdf
 python-dotenv
 hf_xet
@@ -31,7 +32,7 @@ numpy==1.26.4
 #faiss-cpu>=1.7.4,<2.0.0
 
 #sentence-transformers
-torch==2.2.2
+#torch==2.2.2
 #sentence-transformers==2.2.2
 
 # Carregamento PDF
