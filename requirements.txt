@@ -1,9 +1,8 @@
 # Arquivo obrigatório para o Streamlit saber quais bibliotecas instalar
 # packages arranged to optimize Streamlit Cloud build caching
 streamlit
-langchain==0.1.16
-#langchain-community
-langchain-community==0.0.30
+langchain
+langchain-community
 langchain-openai 
 #langchain-core
 langchain-huggingface
