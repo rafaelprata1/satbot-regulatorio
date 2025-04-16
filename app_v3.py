@@ -70,13 +70,43 @@ rag = (
 st.title("🛰️⚖️📘 'Sat-bot' Regulatório - Requisitos Técnicos de Satélites - Ato SOR Anatel 9523/2021")
 st.markdown("Faça perguntas e interaja com o Ato SOR 9.523/2021 da Anatel para saber mais.")
 
-with st.form("form_pergunta"):
-    pergunta = st.text_input("Digite sua pergunta:")
-    enviar = st.form_submit_button("Perguntar")
-    
+#Inicializa o histórico
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
+#Historico de conversas
+historico_placeholder = st.container(height=500, border=True)
+with historico_placeholder:
+    st.markdown("### Histórico da Conversa:")
+    for autor, msg in st.session_state.historico:
+        st.markdown(f"**{autor}:** {msg}")
+
+# Espaço vazio para ajustar layout
+st.write("<br><br>", unsafe_allow_html=True)
+
+# Caixa de entrada fixa na parte inferior usando CSS
+st.markdown("""
+<style>
+    .st-emotion-cache-1y4p8pa {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        padding: 10px;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 10;
+    }
+    .st-emotion-cache-uf99v8 {
+        padding-bottom: 100px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Formulário fixado embaixo
+with st.form("form_pergunta", clear_on_submit=True):
+    pergunta = st.text_input("Digite sua pergunta:", key="input_pergunta")
+    enviar = st.form_submit_button("Perguntar")
 if enviar and pergunta:
     with st.spinner("Consultando..."):
         try:
@@ -85,11 +115,7 @@ if enviar and pergunta:
             resposta = f"Erro ao processar sua pergunta: {str(e)}"
         st.session_state.historico.append(("Você", pergunta))
         st.session_state.historico.append(("🤖 Sat-Bot", resposta))
-    st.rerun()  # Força o Streamlit a atualizar imediatamente
-
-st.markdown("### Histórico da Conversa:")
-for autor, msg in st.session_state.historico:
-    st.markdown(f"**{autor}:** {msg}")
+    st.rerun()
     
 # Botão para limpar histórico
 if st.button("Limpar histórico"):
