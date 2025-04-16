@@ -67,7 +67,7 @@ rag = (
 )
 
 # Interface Streamlit
-st.title("🛰️⚖️📘 Chatbot RAG sobre Requisitos Técnicos de Satélites - Ato SOR Anatel 9523/2021")
+st.title("🛰️⚖️📘 "Sat-bot" Regulatório RAG - Requisitos Técnicos de Satélites - Ato SOR Anatel 9523/2021")
 st.markdown("Faça perguntas e interaja com o Ato SOR 9523/2021 da Anatel para saber mais.")
 
 with st.form("form_pergunta"):
