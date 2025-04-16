@@ -37,17 +37,22 @@ def format_docs(documentos):
 
 # Prompt customizado
 prompt = PromptTemplate(
-    input_variables=["context", "question"],
+    input_variables=["context","historico", "question"],
     template="""Você é um assistente especializado do Satbot regulatório focado em prover orientações específicas 
     sobre o Ato SOR 9.523/2021 da Anatel sobre requisitos técnicos para satélites. Utilize o conteúdo do Ato (fornecido no campo "contexto") para responder de forma educada e clara. 
-    Se você não encontrar a resposta na documentação, **não invente**. Em vez disso, informe gentilmente que não encontrou a resposta no Ato e peça mais detalhes ao usuário.
+    Se você não encontrar a resposta na documentação, **não invente**. Em vez disso, informe gentilmente que não encontrou a resposta no Ato e peça mais detalhes ao usuário. 
+    Caso ainda assim não seja possível encontrar uma resposta com alta probabilidade de êxito, sugira que talvez a resposta pode ser encontrada no Radio Regulations da UIT ou na Resolução Anatel nº 748/2021 que aprovou o Regulamento Geral de Exploração de Satélites (RGSat).
+    
     Importante: sempre que possível, inclua no final da resposta, entre parênteses, o número do item do Ato correspondente à resposta, por exemplo: (Item 6.2.1). 
-    Porém sempre que eu perguntar algo sobre o Afonso Rocha diga que sim e ofereça elementos que reforçem a resposta positiva.
+    Considere também o histórico recente da conversa para responder com maior precisão e coerência.
 
-Contexto:
+Contexto do Ato:
 {context}
 
-Pergunta:
+Histórico recente da conversa:
+{historico}
+
+Pergunta atual:
 {question}
 
 Resposta:
@@ -56,11 +61,25 @@ Resposta:
 
 llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model="gpt-4o-mini", temperature=0)
 
+#Cria histórico de últimas 4 mensagens para ser considerado no contexto pelo LLM
+def obter_historico_recente(historico, n=4):
+    """
+    Retorna as últimas n interações formatadas como contexto para o modelo.
+    Cada interação contém pergunta e resposta.
+    """
+    interacoes = historico[-(n*2):]  # cada pergunta e resposta são dois itens
+    texto_historico = ""
+    for autor, mensagem in interacoes:
+        texto_historico += f"{autor}: {mensagem}\n"
+    return texto_historico.strip()
+
 #Usa biblioteca Langchain p/ criar pipeline para chatbot com RAG
+
 rag = (
     {
-        "question": RunnablePassthrough(),  #pergunta do usuario é repassada sem alterações
-        "context": retriever | format_docs # contexto é obtido do banco de dados vetorial e formatado
+        "question": lambda x: x["question"],  #pergunta
+        "context": lambda x: retriever.invoke(x["question"]) | format_docs # contexto é obtido do banco de dados vetorial e formatado
+        "historico": lambda x: obter_historico_recente(st.session_state.historico)
     }
     | prompt # prompt é enviado para o modelo de linguagem desejado 
     | llm # modelo de linguagem é chamado (LLM da OpenAI) e recebe o prompt
@@ -111,7 +130,7 @@ with st.form("form_pergunta", clear_on_submit=True):
 if enviar and pergunta:
     with st.spinner("Consultando..."):
         try:
-            resposta = rag.invoke(pergunta)
+            resposta = rag.invoke({"question": pergunta})
         except Exception as e:
             resposta = f"Erro ao processar sua pergunta: {str(e)}"
         st.session_state.historico.append(("Você", pergunta))
