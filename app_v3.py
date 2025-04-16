@@ -70,7 +70,6 @@ rag = (
 st.title("🛰️⚖️📘 'Sat-bot' Regulatório - Requisitos Técnicos de Satélites - Ato SOR Anatel 9523/2021")
 st.markdown("Faça perguntas e interaja com o Ato SOR 9.523/2021 da Anatel para saber mais.")
 
-
 with st.form("form_pergunta"):
     pergunta = st.text_input("Digite sua pergunta:")
     enviar = st.form_submit_button("Perguntar")
@@ -91,7 +90,6 @@ if enviar and pergunta:
 st.markdown("### Histórico da Conversa:")
 for autor, msg in st.session_state.historico:
     st.markdown(f"**{autor}:** {msg}")
-
     
 # Botão para limpar histórico
 if st.button("Limpar histórico"):
