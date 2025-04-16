@@ -78,7 +78,7 @@ def obter_historico_recente(historico, n=4):
 rag = (
     {
         "question": lambda x: x["question"],  #pergunta
-        "context": lambda x: retriever.invoke(x["question"]) | format_docs # contexto é obtido do banco de dados vetorial e formatado
+        "context": lambda x: format_docs(retriever.invoke(x["question"]))  # contexto é obtido do banco de dados vetorial e formatado
         "historico": lambda x: obter_historico_recente(st.session_state.historico)
     }
     | prompt # prompt é enviado para o modelo de linguagem desejado 
