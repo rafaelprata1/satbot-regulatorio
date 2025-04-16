@@ -70,26 +70,49 @@ rag = (
 st.title("🛰️⚖️📘 Chatbot RAG sobre Requisitos Técnicos de Satélites - Ato SOR Anatel 9523/2021")
 st.markdown("Faça perguntas e interaja com o Ato SOR 9523/2021 da Anatel para saber mais.")
 
-if "historico" not in st.session_state:
-    st.session_state.historico = []
+with st.form("form_pergunta"):
+    pergunta = st.text_input("Digite sua pergunta:")
+    enviar = st.form_submit_button("Perguntar")
+
+if enviar and pergunta:
+    with st.spinner("Consultando..."):
+        try:
+            resposta = rag.invoke(pergunta)
+        except Exception as e:
+            resposta = f"Erro ao processar sua pergunta: {str(e)}"
+        st.session_state.historico.append(("Você", pergunta))
+        st.session_state.historico.append(("🤖 Sat-Bot", resposta))
+    st.rerun()  # Força o Streamlit a atualizar imediatamente
 
 st.markdown("### Histórico da Conversa:")
 for autor, msg in st.session_state.historico:
     st.markdown(f"**{autor}:** {msg}")
 
-pergunta = st.text_input("Digite sua pergunta:")
-
-if st.button("Perguntar"):
-    if pergunta:
-        with st.spinner("Consultando..."):
-            try:
-                resposta = rag.invoke(pergunta)
-            except Exception as e:
-                resposta = f"Erro ao processar sua pergunta: {str(e)}"
-            st.session_state.historico.append(("Você", pergunta))
-            st.session_state.historico.append(("🤖 Sat-Bot", resposta))
-
 # Botão para limpar histórico
 if st.button("Limpar histórico"):
     st.session_state.historico = []
     st.rerun()
+
+#if "historico" not in st.session_state:
+#    st.session_state.historico = []
+
+#st.markdown("### Histórico da Conversa:")
+#for autor, msg in st.session_state.historico:
+#    st.markdown(f"**{autor}:** {msg}")
+
+#pergunta = st.text_input("Digite sua pergunta:")
+
+#if st.button("Perguntar"):
+#    if pergunta:
+#        with st.spinner("Consultando..."):
+#            try:
+#                resposta = rag.invoke(pergunta)
+#            except Exception as e:
+#                resposta = f"Erro ao processar sua pergunta: {str(e)}"
+#            st.session_state.historico.append(("Você", pergunta))
+#            st.session_state.historico.append(("🤖 Sat-Bot", resposta))
+
+# Botão para limpar histórico
+#if st.button("Limpar histórico"):
+#    st.session_state.historico = []
+#    st.rerun()
