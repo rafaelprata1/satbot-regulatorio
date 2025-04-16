@@ -74,6 +74,9 @@ with st.form("form_pergunta"):
     pergunta = st.text_input("Digite sua pergunta:")
     enviar = st.form_submit_button("Perguntar")
 
+if "historico" not in st.session_state:
+    st.session_state.historico = []
+
 if enviar and pergunta:
     with st.spinner("Consultando..."):
         try:
