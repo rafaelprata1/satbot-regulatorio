@@ -20,7 +20,7 @@ def carregar_base():
     dados = PyPDFLoader("Ato_Requisitos_Tecnicos_Satelites.pdf").load()
     splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=300)
     textos = splitter.split_documents(dados)
-    embeddings = HuggingFaceEmbeddings("sentence-transformers/all-mpnet-base-v2")
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
     return FAISS.from_documents(textos, embeddings)
 
 retriever = carregar_base().as_retriever()
