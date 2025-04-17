@@ -35,7 +35,7 @@ n_documentos = 15
 def format_docs(documentos):
     return "\n\n".join(documento.page_content for documento in documentos)
 
-# Prompt customizado
+# Prompt customizado orientando o chatbot a não alucinar e aprimorar o contexto.
 prompt = PromptTemplate(
     input_variables=["context", "question"],
     template="""Você é um assistente especializado do Satbot regulatório focado em prover orientações específicas 
@@ -121,27 +121,3 @@ if enviar and pergunta:
 if st.button("Limpar histórico"):
     st.session_state.historico = []
     st.rerun()
-
-#if "historico" not in st.session_state:
-#    st.session_state.historico = []
-
-#st.markdown("### Histórico da Conversa:")
-#for autor, msg in st.session_state.historico:
-#    st.markdown(f"**{autor}:** {msg}")
-
-#pergunta = st.text_input("Digite sua pergunta:")
-
-#if st.button("Perguntar"):
-#    if pergunta:
-#        with st.spinner("Consultando..."):
-#            try:
-#                resposta = rag.invoke(pergunta)
-#            except Exception as e:
-#                resposta = f"Erro ao processar sua pergunta: {str(e)}"
-#            st.session_state.historico.append(("Você", pergunta))
-#            st.session_state.historico.append(("🤖 Sat-Bot", resposta))
-
-# Botão para limpar histórico
-#if st.button("Limpar histórico"):
-#    st.session_state.historico = []
-#    st.rerun()
